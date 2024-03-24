@@ -2,11 +2,14 @@ package main
 
 import (
 	"fixy-finance-api/internal/controllers"
+	"fixy-finance-api/internal/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+
+	middlewares.SetCorsToAcceptAll(r)
 
 	expenseController := &controllers.ExpenseController{}
 
