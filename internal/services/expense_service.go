@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"time"
 )
 
 type ExpenseService struct{}
@@ -18,7 +19,10 @@ func (service ExpenseService) SaveNewExpense(newExpense NewExpenseRequest) (*mon
 		fmt.Println("MongoDB Connection Error", connectionError)
 	}
 
-	result, insertionError := dbConnection.GetDatabase().Collection("expenses").InsertOne(context.TODO(), newExpense)
+	entry := newExpense
+	entry.CreatedAt = time.Now()
+
+	result, insertionError := dbConnection.GetDatabase().Collection("expenses").InsertOne(context.TODO(), entry)
 	if insertionError != nil {
 		fmt.Println("MongoDB Insertion Error:", insertionError)
 	}
